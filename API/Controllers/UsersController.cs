@@ -170,5 +170,55 @@ namespace HotelBookingAPI.Controllers
 
             return NoContent();
         }
+
+        // POST: api/Users/login
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(Login login)
+        {
+            if (string.IsNullOrEmpty(login.Email) || string.IsNullOrEmpty(login.Password))
+            {
+                return BadRequest("Username and password are required.");
+            }
+
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                // Check if the email exists in the database
+                using (var command = new NpgsqlCommand("SELECT EXISTS(SELECT 1 FROM Users WHERE Email = @Email)", connection))
+                {
+                    command.Parameters.AddWithValue("Email", login.Email);
+
+                    bool emailExists = (bool)await command.ExecuteScalarAsync();
+                    if (!emailExists)
+                    {
+                        return NotFound("User not found.");
+                    }
+                }
+
+                using (var command = new NpgsqlCommand("SELECT HashedPassword FROM Users WHERE Email = @Email", connection))
+                {
+                    command.Parameters.AddWithValue("Email", login.Email);
+
+                    var hashedPassword = await command.ExecuteScalarAsync();
+                    if (hashedPassword == null)
+                    {
+                        return NotFound("User not found.");
+                    }
+
+                    // Assuming you have a method to verify the password
+                    bool isPasswordValid = HashingService.VerifyPassword(hashedPassword.ToString(), login.Password);
+                    if (!isPasswordValid)
+                    {
+                        return Unauthorized("Invalid username or password.");
+                    }
+
+                    // Assuming you have a method to generate a token
+                    var token = TokenGenerationService.GenerateToken(login.Email);
+                    return Ok(new { Token = token });
+                }
+            }
+        }
+
     }
 }
