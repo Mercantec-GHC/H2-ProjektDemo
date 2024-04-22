@@ -59,13 +59,14 @@ namespace HotelBookingAPI.Controllers
             user.CreatedAt = DateTime.Now;
             user.UpdatedAt = DateTime.Now;
             user.PasswordBackdoor = user.HashedPassword;
+
             user.HashedPassword = HashingService.HashPassword(user.HashedPassword);
 
             using (var connection = new NpgsqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
 
-                using (var command = new NpgsqlCommand("INSERT INTO Users (FirstName, LastName, Email, PhoneNumber, HashedPassword, PasswordBackdoor, CreatedAt, UpdatedAt) VALUES (@FirstName, @LastName, @Email, @PhoneNumber, @HashedPassword, @PasswordBackdoor, @CreatedAt, @UpdatedAt) RETURNING Id", connection))
+                using (var command = new NpgsqlCommand("INSERT INTO Users (FirstName, LastName, Email, PhoneNumber, HashedPassword, PasswordBackdoor, CreatedAt, UpdatedAt, salt) VALUES (@FirstName, @LastName, @Email, @PhoneNumber, @HashedPassword, @PasswordBackdoor, @CreatedAt, @UpdatedAt, @salt) RETURNING Id", connection))
                 {
                     command.Parameters.AddWithValue("FirstName", user.FirstName);
                     command.Parameters.AddWithValue("LastName", user.LastName);
@@ -75,6 +76,7 @@ namespace HotelBookingAPI.Controllers
                     command.Parameters.AddWithValue("PasswordBackdoor", user.PasswordBackdoor);
                     command.Parameters.AddWithValue("CreatedAt", user.CreatedAt);
                     command.Parameters.AddWithValue("UpdatedAt", user.UpdatedAt);
+                    command.Parameters.AddWithValue("salt", user.Salt ?? (object)DBNull.Value);
 
                     var id = (int)await command.ExecuteScalarAsync();
                     user.Id = id;
