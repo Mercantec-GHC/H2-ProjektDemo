@@ -28,7 +28,8 @@ namespace HotelBookingAPI.Controllers
             {
                 await connection.OpenAsync();
 
-                using (var command = new NpgsqlCommand("SELECT * FROM Users", connection))
+                using (var command = new NpgsqlCommand(@"SELECT * FROM Users
+                                                         ORDER BY id", connection))
                 using (var reader = await command.ExecuteReaderAsync())
                 {
                     while (await reader.ReadAsync())
