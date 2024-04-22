@@ -6,8 +6,8 @@
 
 <p>
     Number of People: <InputNumber @bind-Value="numberOfPeople"> </InputNumber>
-    Start Date: <InputDate @bind-Value="startDate" />
-    End Date: <InputDate @bind-Value="endDate" />
+    Start Date:       <InputDate @bind-Value="startDate" />
+    End Date:         <InputDate @bind-Value="endDate" />
 </p>
 
 <button @onclick="FetchRooms">Find Rooms</button>
@@ -36,7 +36,7 @@
 
     private async Task FetchRooms()
     {
-        if (startDate > endDate)
+        if (startDate.AddDays(1) > endDate)
         {
             error = "Slut datoen skal være senere end start datoen";
             return;
