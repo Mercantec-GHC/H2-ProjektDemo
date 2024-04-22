@@ -10,7 +10,7 @@ public class TokenGenerationService
         var secretKey = "your_secret_key_here_must_be_at_least_16_bytes_long"; 
         var issuer = "123"; 
         var audience = "123";
-        var expireMinutes = 30;
+        var expireMinutes = 30*2*24;
 
         var securityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
