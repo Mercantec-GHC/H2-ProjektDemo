@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Users\MAGS\Documents\GitHub\H2-ProjektDemo\BlazorWA\bin\Release\net8.0\browser-wasm\publish\</_PublishTargetUrl>
+    <History>False|2024-04-22T07:25:20.5664066Z;True|2024-04-22T09:23:54.8870318+02:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>
