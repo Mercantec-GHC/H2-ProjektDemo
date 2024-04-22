@@ -1,0 +1,49 @@
+﻿@page "/counter"
+@inject HttpClient Http
+
+<h3>Users</h3>
+
+@if (users == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td>@user.FirstName</td>
+                    <td>@user.LastName</td>
+                    <td>@user.Email</td>
+                    <td>@user.PhoneNumber</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<User> users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            users = await Http.GetFromJsonAsync<List<User>>("https://h2-api.onrender.com/api/Users");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching users: {ex.Message}");
+        }
+    }
+}
