@@ -33,12 +33,16 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-CQs86IgamgZ7u3S3kJlHx3tdhLtDVfOh\/K+aleoWP9Q=",
+      "hash": "sha256-1YfxDvxCWUgEY2HC63lVg+zU1pFYG0UXgYMpNBjxzFw=",
       "url": "_framework\/blazor.boot.json"
     },
     {
-      "hash": "sha256-SB9yexva3A3CHCEr8NfYuwjMhDs40OJ8bM9e7MvGFCk=",
+      "hash": "sha256-8BqUzCq57MMVLiAeIJ53ykDTEko+8toF3gPDtDsLBNs=",
       "url": "_framework\/BlazorWA.wasm"
+    },
+    {
+      "hash": "sha256-R3U4+XJxBhgNcr4M5QlLDOF2ca249W59OZyM7pfPvQk=",
+      "url": "_framework\/DomainModels.wasm"
     },
     {
       "hash": "sha256-FH2Qq1tZ5w5cA8ZReH0\/rL2GxaIjA5uDOA6g4+RcHmY=",
@@ -101,7 +105,7 @@
       "url": "_framework\/System.Collections.Concurrent.wasm"
     },
     {
-      "hash": "sha256-vmsYLLk8McuaVAVXz6apamYb9GxVVkSB5oo6\/kub+6Q=",
+      "hash": "sha256-I5f+KimsLRzY4UcaLAJrcg6b3CXLjP9B3jyOplR5whQ=",
       "url": "_framework\/System.Collections.wasm"
     },
     {
@@ -109,7 +113,7 @@
       "url": "_framework\/System.ComponentModel.wasm"
     },
     {
-      "hash": "sha256-kb6thPppTzhq1kKHgp\/f33KhVp+0qdZ+xDrYMeQTM7g=",
+      "hash": "sha256-H6P\/ybz0D879LCQfaZHBEmkk9YkHGBAmaoVcl6Ohgi4=",
       "url": "_framework\/System.Console.wasm"
     },
     {
@@ -149,7 +153,7 @@
       "url": "_framework\/System.Runtime.InteropServices.JavaScript.wasm"
     },
     {
-      "hash": "sha256-r7Ga3c0i48ntMuVImHprfeb3FiJOcqTWy0swTN4+06k=",
+      "hash": "sha256-w6D+oDhMoGq7IgK26EfmR3G8P7ZW+xUxa9Mn63oCjWY=",
       "url": "_framework\/System.Runtime.wasm"
     },
     {
@@ -173,7 +177,7 @@
       "url": "css\/app.css"
     },
     {
-      "hash": "sha256-z8OR40MowJ8GgK6P89Y+hiJK5+cclzFHzLhFQLL92bg=",
+      "hash": "sha256-SiIVMGgRhdXjKSTIddX7mh9IbOXVcwQWc7\/p4nS6D\/0=",
       "url": "css\/bootstrap\/bootstrap.min.css"
     },
     {
@@ -205,5 +209,5 @@
       "url": "sample-data\/weather.json"
     }
   ],
-  "version": "tIZZSPSd"
+  "version": "0i94eC+N"
 };
