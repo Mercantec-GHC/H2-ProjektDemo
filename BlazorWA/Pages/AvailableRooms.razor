@@ -1,0 +1,47 @@
+﻿@page "/availableRooms"
+@using System.Net.Http
+@inject HttpClient Http
+
+<h3>Select Dates</h3>
+
+<p>
+    Number of People: <InputNumber @bind-Value="numberOfPeople"> </InputNumber>
+    Start Date: <InputDate @bind-Value="startDate" />
+    End Date: <InputDate @bind-Value="endDate" />
+</p>
+
+<button @onclick="FetchRooms">Find Rooms</button>
+@if( error != null)
+{
+    <br />
+    <br />
+    <p> @error </p>
+} else if (rooms != null)
+{
+    <h3>Available Rooms</h3>
+    <ul>
+        @foreach (var room in rooms)
+        {
+            <li>@room.RoomName - @room.PricePerDay per day</li>
+        }
+    </ul>
+}
+
+@code {
+    private DateTime startDate = DateTime.Now;
+    private DateTime endDate = DateTime.Now.AddDays(7);
+    private int numberOfPeople = 0;
+    private List<RoomDTO> rooms;
+    private string error;
+
+    private async Task FetchRooms()
+    {
+        if (startDate > endDate)
+        {
+            error = "Slut datoen skal være senere end start datoen";
+            return;
+        }
+        var response = await Http.GetFromJsonAsync<List<RoomDTO>>($"https://h2-api.onrender.com/api/Rooms/available?numberOfPeople={numberOfPeople}&startDate={startDate:yyyy-MM-dd}&endDate={endDate:yyyy-MM-dd}");
+        rooms = response;
+    }
+}

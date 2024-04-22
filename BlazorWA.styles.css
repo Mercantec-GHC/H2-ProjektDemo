@@ -160,3 +160,42 @@ main[b-yaks4l2whk] {
         overflow-y: auto;
     }
 }
+/* /Pages/AvailableRooms.razor.rz.scp.css */
+h3[b-4fif5a7zxy] {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+p[b-4fif5a7zxy] {
+    margin-bottom: 20px;
+}
+
+input[type="number"][b-4fif5a7zxy],
+input[type="date"][b-4fif5a7zxy] {
+    padding: 5px;
+    font-size: 16px;
+}
+
+button[b-4fif5a7zxy] {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    button:hover[b-4fif5a7zxy] {
+        background-color: #0056b3;
+    }
+
+ul[b-4fif5a7zxy] {
+    list-style-type: none;
+    padding: 0;
+}
+
+li[b-4fif5a7zxy] {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
