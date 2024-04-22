@@ -18,36 +18,147 @@ namespace HotelBookingAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Room>>> GetRooms()
+        public async Task<ActionResult<IEnumerable<RoomDTO>>> GetRooms()
         {
-            var rooms = new List<Room>();
+            var rooms = new List<RoomDTO>();
 
             using (var connection = new NpgsqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
 
-                using (var command = new NpgsqlCommand("SELECT * FROM Rooms", connection))
-                using (var reader = await command.ExecuteReaderAsync())
+                string sql = @"SELECT r.Id, r.RoomNumber, r.CreatedAt, r.UpdatedAt, rt.RoomName, rt.PricePerDay, rt.NumberOfBeds 
+                               FROM Rooms r 
+                               INNER JOIN roomtypes rt 
+                               ON r.RoomTypeId = rt.Id";
+
+                using (var command = new NpgsqlCommand(sql, connection))
+                    using (var reader = await command.ExecuteReaderAsync())
                 {
                     while (await reader.ReadAsync())
                     {
-                        var room = new Room
+                        var roomDetail = new RoomDTO
                         {
                             Id = reader.GetInt32(0),
                             RoomNumber = reader.GetString(1),
-                            RoomSize = reader.GetString(2),
-                            RoomType = reader.GetString(3),
-                            IsAvailable = reader.GetBoolean(4),
-                            CreatedAt = reader.GetDateTime(5),
-                            UpdatedAt = reader.GetDateTime(6)
+                            CreatedAt = reader.GetDateTime(2),
+                            UpdatedAt = reader.GetDateTime(3),
+                            RoomName = reader.GetString(4),
+                            PricePerDay = reader.GetFloat(5),
+                            NumberOfBeds = reader.GetInt32(6)
                         };
 
-                        rooms.Add(room);
+                        rooms.Add(roomDetail);
                     }
                 }
             }
 
             return Ok(rooms);
+        }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<RoomDTO>> GetRoomById(int id)
+        {
+            RoomDTO roomDetail = null;
+
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string sql = @"SELECT r.Id, r.RoomNumber, r.CreatedAt, r.UpdatedAt, rt.RoomName, rt.PricePerDay, rt.NumberOfBeds 
+                               FROM Rooms r 
+                               INNER JOIN roomtypes rt 
+                               ON r.RoomTypeId = rt.Id
+                               WHERE r.Id = @Id";
+
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("Id", id);
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            roomDetail = new RoomDTO
+                            {
+                                Id = reader.GetInt32(0),
+                                RoomNumber = reader.GetString(1),
+                                CreatedAt = reader.GetDateTime(2),
+                                UpdatedAt = reader.GetDateTime(3),
+                                RoomName = reader.GetString(4),
+                                PricePerDay = reader.GetFloat(5),
+                                NumberOfBeds = reader.GetInt32(6)
+                            };
+                        }
+                    }
+                }
+            }
+
+            if (roomDetail == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(roomDetail);
+        }
+        [HttpGet("available")]
+        public async Task<ActionResult<IEnumerable<RoomDTO>>> GetAvailableRooms(int numberOfPeople, DateTime startDate, DateTime endDate)
+        {
+            List<RoomDTO> allRooms = new List<RoomDTO>();
+            List<RoomDTO> availableRooms = new List<RoomDTO>();
+
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string sqlAllRooms = @"
+                    SELECT r.id, r.RoomNumber, rt.RoomName, rt.PricePerDay, rt.NumberOfBeds
+                    FROM Rooms r
+                    INNER JOIN roomtypes rt ON r.RoomTypeId = rt.Id;";
+
+                using (var command = new NpgsqlCommand(sqlAllRooms, connection))
+                {
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var roomDetail = new RoomDTO
+                            {
+                                Id = reader.GetInt32(0),
+                                RoomNumber = reader.GetString(1),
+                                RoomName = reader.GetString(2),
+                                PricePerDay = reader.GetFloat(3),
+                                NumberOfBeds = reader.GetInt32(4)
+                            };
+
+                            allRooms.Add(roomDetail);
+                        }
+                    }
+                }
+
+                foreach (var room in allRooms)
+                {
+                    string sqlCheckAvailability = @"
+                        SELECT COUNT(*)
+                        FROM bookings b
+                        WHERE b.RoomId = @RoomId
+                        AND (b.CheckInDate, b.CheckOutDate) OVERLAPS (@StartDate, @EndDate);";
+
+                    using (var command = new NpgsqlCommand(sqlCheckAvailability, connection))
+                    {
+                        command.Parameters.AddWithValue("RoomId", room.Id);
+                        command.Parameters.AddWithValue("StartDate", startDate);
+                        command.Parameters.AddWithValue("EndDate", endDate);
+
+                        long bookingCount = (long)await command.ExecuteScalarAsync();
+
+                        if (bookingCount == 0 && room.NumberOfBeds >= numberOfPeople)
+                        {
+                            availableRooms.Add(room);
+                        }
+                    }
+                }
+            }
+
+            return Ok(availableRooms);
         }
 
     }

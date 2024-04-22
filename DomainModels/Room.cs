@@ -9,8 +9,14 @@ namespace DomainModels
     public class Room : Common
     {
         public string RoomNumber { get; set; }
-        public string RoomSize { get; set; }
-        public string RoomType { get; set; }
-        public bool IsAvailable { get; set; }
+        public int RoomTypeId { get; set; }
+    }
+
+    public class RoomDTO : Common
+    {
+        public string RoomNumber { get; set; }
+        public string RoomName { get; set; }
+        public float PricePerDay { get; set; }
+        public int NumberOfBeds { get; set; }
     }
 }

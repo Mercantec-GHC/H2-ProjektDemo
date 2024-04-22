@@ -34,8 +34,8 @@ namespace HotelBookingAPI.Controllers
                         var booking = new Booking
                         {
                             Id = reader.GetInt32(0),
-                            CheckInDate = reader.GetDateTime(1),
-                            CheckOutDate = reader.GetDateTime(2),
+                            CheckInDate = DateOnly.FromDateTime(reader.GetDateTime(1)),
+                            CheckOutDate = DateOnly.FromDateTime(reader.GetDateTime(2)),
                             UserId = reader.GetInt32(3),
                             RoomId = reader.GetInt32(4),
                             CreatedAt = reader.GetDateTime(5),

@@ -8,9 +8,9 @@ namespace DomainModels
 {
     public class Booking : Common
     {
-        public DateTime CheckInDate { get; set; }
-        public DateTime CheckOutDate { get; set; }
-        public int UserId { get; set; }
-        public int RoomId { get; set; }
+        public DateOnly CheckInDate { get; set; }
+        public DateOnly CheckOutDate { get; set; }
+        public int UserId { get; set; } //FK to Users
+        public int RoomId { get; set; } //FK to Rooms
     }
 }
