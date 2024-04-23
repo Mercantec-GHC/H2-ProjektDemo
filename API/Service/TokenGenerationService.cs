@@ -30,6 +30,9 @@ public class TokenGenerationService
         );
 
         var tokenHandler = new JwtSecurityTokenHandler();
-        return tokenHandler.WriteToken(token);
+
+        var finalToken = tokenHandler.WriteToken(token);
+
+        return finalToken;
     }
 }

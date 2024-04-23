@@ -246,16 +246,14 @@ namespace HotelBookingAPI.Controllers
                         return NotFound("User not found.");
                     }
 
-                    // Assuming you have a method to verify the password
                     bool isPasswordValid = HashingService.VerifyPassword(hashedPassword.ToString(), login.Password);
                     if (!isPasswordValid)
                     {
                         return Unauthorized("Invalid username or password.");
                     }
 
-                    // Assuming you have a method to generate a token
                     var token = TokenGenerationService.GenerateToken(login.Email);
-                    return Ok(new { Token = token });
+                    return Ok(token);
                 }
             }
         }

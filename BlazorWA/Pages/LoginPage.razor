@@ -23,23 +23,34 @@
     <button type="submit" class="btn btn-primary">Login</button>
 </EditForm>
 
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
+
+<p> </p>
+
 @code {
     private DomainModels.Login login = new DomainModels.Login();
+    private string errorMessage; // Property to store the error message
 
     private async Task HandleLogin()
     {
         var response = await Http.PostAsJsonAsync("https://h2-api.onrender.com/api/Users/login", login);
         if (response.IsSuccessStatusCode)
         {
+            //Console.WriteLine(response.Content.ReadFromJsonAsync());
+
             var token = await response.Content.ReadAsStringAsync();
             await LocalStorage.SetItemAsync("authToken", token);
-            // Redirect to a protected page or the home page
-            NavigationManager.NavigateTo("/");
+            //NavigationManager.NavigateTo("/");
         }
         else
         {
-            // Handle login failure
-            Console.WriteLine("Login failed.");
+            errorMessage = await response.Content.ReadAsStringAsync(); 
+            StateHasChanged(); 
         }
     }
 }

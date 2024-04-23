@@ -1,0 +1,48 @@
+﻿@page "/currentuser"
+@using System.Net.Http
+@using Blazored.LocalStorage
+@inject HttpClient Http
+@inject ILocalStorageService LocalStorage
+@using System.IdentityModel.Tokens.Jwt
+
+<h3>Current User Information</h3>
+
+@if (currentUser != null)
+{
+    <div>
+        <h4>@currentUser.FirstName @currentUser.LastName</h4>
+        <p>Email: @currentUser.Email</p>
+        <p>Phone Number: @currentUser.PhoneNumber</p>
+    </div>
+}
+else
+{
+    <p>No user is currently logged in.</p>
+}
+
+@code {
+    private User currentUser;
+
+    protected override async Task OnInitializedAsync()
+    {
+        string token = await LocalStorage.GetItemAsync<string>("authToken");
+        
+        Console.WriteLine(token);
+
+        string email = GetUserEmailFromToken(token);
+        Console.WriteLine(email);
+        if (!string.IsNullOrEmpty(email))
+        {
+            currentUser = await Http.GetFromJsonAsync<User>($"https://h2-api.onrender.com/api/Users/{email}");
+        }
+    }
+    public static string GetUserEmailFromToken(string jwtToken)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var token = handler.ReadJwtToken(jwtToken);
+
+        var emailClaim = token.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
+
+        return emailClaim?.Value;
+    }
+}
