@@ -1,6 +1,8 @@
 ﻿@page "/login"
 @using System.Net.Http
 @inject HttpClient Http
+@inject IJSRuntime JSRuntime
+
 
 <h3>Login</h3>
 
@@ -41,11 +43,11 @@
         var response = await Http.PostAsJsonAsync("https://h2-api.onrender.com/api/Users/login", login);
         if (response.IsSuccessStatusCode)
         {
-            //Console.WriteLine(response.Content.ReadFromJsonAsync());
-
             var token = await response.Content.ReadAsStringAsync();
-            await LocalStorage.SetItemAsync("authToken", token);
-            //NavigationManager.NavigateTo("/");
+            TokenService.Token = token;
+            await JSRuntime.InvokeVoidAsync("localStorageInterop.setItem", "authToken", token);
+            StateHasChanged();
+            NavigationManager.NavigateTo("/");
         }
         else
         {

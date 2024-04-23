@@ -1,9 +1,7 @@
 ﻿@page "/currentuser"
 @using System.Net.Http
-@using Blazored.LocalStorage
 @inject HttpClient Http
-@inject ILocalStorageService LocalStorage
-@using System.IdentityModel.Tokens.Jwt
+@using BlazorWA.Service
 
 <h3>Current User Information</h3>
 
@@ -25,24 +23,11 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        string token = await LocalStorage.GetItemAsync<string>("authToken");
-        
-        Console.WriteLine(token);
-
-        string email = GetUserEmailFromToken(token);
-        Console.WriteLine(email);
+        var token = TokenService.Token;
+        string email = TokenService.GetUserEmailFromToken(token);
         if (!string.IsNullOrEmpty(email))
         {
             currentUser = await Http.GetFromJsonAsync<User>($"https://h2-api.onrender.com/api/Users/{email}");
         }
-    }
-    public static string GetUserEmailFromToken(string jwtToken)
-    {
-        var handler = new JwtSecurityTokenHandler();
-        var token = handler.ReadJwtToken(jwtToken);
-
-        var emailClaim = token.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
-
-        return emailClaim?.Value;
     }
 }

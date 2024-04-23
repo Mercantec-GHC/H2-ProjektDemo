@@ -10,7 +10,8 @@ Welcome to your new app.
 @code {
     protected override async Task OnInitializedAsync()
     {
-        var token = await LocalStorage.GetItemAsync<string>("authToken");
+        var token = TokenService.Token;
+        StateHasChanged();
         Console.WriteLine($"JWT Token: {token}");
     }
 

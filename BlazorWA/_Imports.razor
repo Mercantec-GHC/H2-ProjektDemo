@@ -9,8 +9,5 @@
 @using BlazorWA
 @using BlazorWA.Layout
 @using DomainModels @* Domain Models that have shared classes to build both backend and frontend *@
-@using Blazored.LocalStorage 
 @inject NavigationManager NavigationManager
-@inject Blazored.LocalStorage.ISyncLocalStorageService LocalStorage
-@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
-
+@inject Service.TokenService TokenService

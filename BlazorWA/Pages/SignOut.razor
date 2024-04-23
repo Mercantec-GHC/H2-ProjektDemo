@@ -1,0 +1,20 @@
+﻿@page "/signout"
+@using System.Net.Http
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Sign Out</h3>
+
+<p>Are you sure you want to sign out?</p>
+
+<button @onclick="HandleSignOut" class="btn btn-danger">Yes, Sign Out</button>
+
+@code {
+    private async Task HandleSignOut()
+    {
+        await JSRuntime.InvokeVoidAsync("localStorageInterop.removeItem", "authToken"); TokenService.Token = null;
+        StateHasChanged();
+        NavigationManager.NavigateTo("/");
+    }
+}
