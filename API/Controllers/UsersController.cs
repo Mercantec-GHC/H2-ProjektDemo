@@ -53,6 +53,43 @@ namespace HotelBookingAPI.Controllers
             return Ok(users);
         }
 
+        [HttpGet("{email}")]
+        public async Task<ActionResult<User>> GetUserByEmail(string email)
+        {
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (var command = new NpgsqlCommand(@"SELECT * FROM Users
+                                                 WHERE Email = @Email", connection))
+                {
+                    command.Parameters.AddWithValue("Email", email);
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            var user = new User
+                            {
+                                Id = reader.GetInt32(0),
+                                FirstName = reader.GetString(1),
+                                LastName = reader.GetString(2),
+                                Email = reader.GetString(3),
+                                PhoneNumber = reader.GetString(4),
+                                CreatedAt = reader.GetDateTime(6),
+                                UpdatedAt = reader.GetDateTime(7)
+                            };
+
+                            return Ok(user);
+                        }
+                    }
+                }
+            }
+
+            return NotFound();
+        }
+
+
         // POST: api/Users
         [HttpPost]
         public async Task<ActionResult<User>> CreateUser(User user)

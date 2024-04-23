@@ -8,8 +8,8 @@ public class TokenGenerationService
     public static string GenerateToken(string email)
     {
         var secretKey = "your_secret_key_here_must_be_at_least_16_bytes_long"; 
-        var issuer = "123"; 
-        var audience = "123";
+        var issuer = "MAGS-Template"; 
+        var audience = "H2-ProjektDemo";
         var expireMinutes = 30*2*24;
 
         var securityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretKey));
