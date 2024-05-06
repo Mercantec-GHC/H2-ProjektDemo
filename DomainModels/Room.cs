@@ -10,6 +10,7 @@ namespace DomainModels
     {
         public string RoomNumber { get; set; }
         public int RoomTypeId { get; set; }
+        public List<string> pictureURLs { get; set; }
     }
 
     public class RoomDTO : Common
@@ -18,5 +19,7 @@ namespace DomainModels
         public string RoomName { get; set; }
         public float PricePerDay { get; set; }
         public int NumberOfBeds { get; set; }
+        public List<string> pictureURLs { get; set; }
+
     }
 }

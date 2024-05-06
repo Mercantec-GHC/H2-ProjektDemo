@@ -1,0 +1,31 @@
+﻿@if(roomToShow.RoomName == "Single")
+{
+    <div class="card">
+        <div class="card-body">
+            <div class="card-content">
+                <h5 class="card-title">Room number: @roomToShow.RoomNumber</h5>
+                <h5 class="card-title">This room is a single, therefore there is only one bed!</h5>
+                <h5 class="card-title">The price is @roomToShow.PricePerDay per day </h5>
+                <img src="./Assets/Rooms/SingleRoom.jpg" width="250" />
+            </div>
+        </div>
+    </div>
+} else if(roomToShow.RoomName == "Double")
+{
+    <div class="card">
+        <div class="card-body">
+            <div class="card-content">
+                <h5 class="card-title">Room number: @roomToShow.RoomNumber</h5>
+                <h5 class="card-title">In this spacey hotelroom there is a double bed, that can be split into 2 seperate beds!</h5>
+                <h5 class="card-title">The price is @roomToShow.PricePerDay per day </h5>
+                <img src="./Assets/Rooms/DoubleRoom.jpg" width="250" />
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public RoomDTO roomToShow { get; set; }
+}

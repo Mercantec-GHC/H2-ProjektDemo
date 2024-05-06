@@ -1,6 +1,7 @@
 ﻿@page "/availableRooms"
 @using System.Net.Http
 @inject HttpClient Http
+@using BlazorWA.Pages.RazorComponents
 
 <h3>Select Dates</h3>
 
@@ -16,23 +17,48 @@
     <br />
     <br />
     <p> @error </p>
-} else if (rooms != null)
+}
+else if (availableRooms != null)
 {
     <h3>Available Rooms</h3>
     <ul>
-        @foreach (var room in rooms)
+        @foreach (var room in availableRooms)
         {
-            <li>@room.RoomName - @room.PricePerDay per day</li>
+            <li>
+                <RoomListItem roomToShow="room"></RoomListItem>
+            </li>
         }
     </ul>
 }
 
+<style>
+    .card-content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>
+
 @code {
-    private DateTime startDate = DateTime.Now;
-    private DateTime endDate = DateTime.Now.AddDays(7);
-    private int numberOfPeople = 0;
-    private List<RoomDTO> rooms;
+    private List<RoomDTO> availableRooms;
+
     private string error;
+
+
+    [Parameter]
+    public DateTime startDate { get; set; }
+    [Parameter]
+    public DateTime endDate {get; set;}
+    [Parameter]
+    public int numberOfPeople { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        startDate = DateTime.Now;
+        endDate = DateTime.Now.AddDays(7);
+        numberOfPeople = 1;
+    }
 
     private async Task FetchRooms()
     {
@@ -42,6 +68,6 @@
             return;
         }
         var response = await Http.GetFromJsonAsync<List<RoomDTO>>($"https://h2-api.onrender.com/api/Rooms/available?numberOfPeople={numberOfPeople}&startDate={startDate:yyyy-MM-dd}&endDate={endDate:yyyy-MM-dd}");
-        rooms = response;
+        availableRooms = response;
     }
 }

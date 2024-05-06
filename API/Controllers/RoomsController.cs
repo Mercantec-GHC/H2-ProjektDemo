@@ -99,6 +99,7 @@ namespace HotelBookingAPI.Controllers
 
             return Ok(roomDetail);
         }
+
         [HttpGet("available")]
         public async Task<ActionResult<IEnumerable<RoomDTO>>> GetAvailableRooms(int numberOfPeople, DateTime startDate, DateTime endDate)
         {
