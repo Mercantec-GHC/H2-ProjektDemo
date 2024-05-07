@@ -26,7 +26,7 @@ namespace HotelBookingAPI.Controllers
             {
                 await connection.OpenAsync();
 
-                string sql = @"SELECT r.Id, r.RoomNumber, r.CreatedAt, r.UpdatedAt, rt.RoomName, rt.PricePerDay, rt.NumberOfBeds 
+                string sql = @"SELECT r.Id, r.RoomNumber, r.CreatedAt, r.UpdatedAt, rt.RoomName, rt.PricePerDay, rt.NumberOfBeds, rt.array_to_string(roompictures, ',') AS roompictures 
                                FROM Rooms r 
                                INNER JOIN roomtypes rt 
                                ON r.RoomTypeId = rt.Id";
@@ -46,6 +46,11 @@ namespace HotelBookingAPI.Controllers
                             PricePerDay = reader.GetFloat(5),
                             NumberOfBeds = reader.GetInt32(6)
                         };
+
+                        foreach (var item in reader["roompictures"].ToString().Split(',').Where(s => !string.IsNullOrWhiteSpace(s)))
+                        {
+                            roomDetail.RoomPictures.Add(item);
+                        }
 
                         rooms.Add(roomDetail);
                     }

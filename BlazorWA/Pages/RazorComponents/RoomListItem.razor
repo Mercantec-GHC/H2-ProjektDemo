@@ -9,7 +9,7 @@
                     <h5 class="card-title">The price is @roomToShow.PricePerDay per day </h5>
                     <a class="btn btn-primary" href="./room/@roomToShow.Id"> Book værelse @roomToShow.RoomNumber </a>
                 </div>
-                <img src="https://hotel.magsapi.com/SingleRoom.jpg" width="250" />
+                <img src="@roomToShow.RoomPictures[0]" width="250" />
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@ else if (roomToShow.RoomName == "Double")
                     <h5 class="card-title">The price is @roomToShow.PricePerDay per day </h5>
                     <a class="btn btn-primary" href="./room/@roomToShow.Id"> Book værelse @roomToShow.RoomNumber </a>
                 </div>
-                <img src="https://hotel.magsapi.com/DoubleRoom.jpg" width="250" />
+                <img src="@roomToShow.RoomPictures[0]" width="250" />
             </div>
         </div>
     </div>
