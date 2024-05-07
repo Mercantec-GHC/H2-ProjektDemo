@@ -49,12 +49,16 @@ namespace HotelBookingAPI.Controllers
 
             return Ok(bookings);
         }
-        [HttpGet("{userId}")]
+
+        //Get active bookings for userId
+        [HttpGet("active/{userId}")]
         public async Task<ActionResult<IEnumerable<Booking>>> GetBookings(int userId)
         {
             var bookings = new List<Booking>();
 
-            string sqlQuery = "SELECT * FROM Bookings WHERE UserId = @UserId";
+            string sqlQuery = @"SELECT * FROM Bookings 
+                                WHERE UserId = @UserId
+                                AND CheckOutDate > CURRENT_DATE";
 
             using (var connection = new NpgsqlConnection(_connectionString))
             {
@@ -63,7 +67,7 @@ namespace HotelBookingAPI.Controllers
                 using (var command = new NpgsqlCommand(sqlQuery, connection))
                 {
 
-                        command.Parameters.AddWithValue("@UserId", userId);
+                    command.Parameters.AddWithValue("@UserId", userId);
 
 
                     using (var reader = await command.ExecuteReaderAsync())
