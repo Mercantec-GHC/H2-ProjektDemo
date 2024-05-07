@@ -1,3 +1,4 @@
+using API.Service;
 using Npgsql;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -23,11 +24,19 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? Environment.GetEnvironmentVariable("DefaultConnection");
+Console.WriteLine($"ConnectionString: {builder.Configuration.GetConnectionString("DefaultConnection")}");
+Console.WriteLine($"AccessKey: {builder.Configuration.GetConnectionString("AccessKeyID")}");
+Console.WriteLine($"SecretKey: {builder.Configuration.GetConnectionString("secretKey")}");
 
-Console.WriteLine(connectionString);
 
-builder.Services.AddSingleton(connectionString);
+// In your Startup.cs or Program.cs
+builder.Services.AddSingleton(new AppConfiguration
+{
+    ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? Environment.GetEnvironmentVariable("DefaultConnection"),
+    AccessKey = builder.Configuration.GetConnectionString("AccessKeyID") ?? Environment.GetEnvironmentVariable("AccessKeyID"),
+    SecretKey = builder.Configuration.GetConnectionString("secretKey") ?? Environment.GetEnvironmentVariable("secretKey")
+});
+
 
 var app = builder.Build();
 

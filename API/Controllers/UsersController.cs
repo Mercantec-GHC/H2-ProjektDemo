@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.Service;
 using System.Text;
+using Microsoft.Extensions.Options;
 
 namespace HotelBookingAPI.Controllers
 {
@@ -14,9 +15,9 @@ namespace HotelBookingAPI.Controllers
     {
         private readonly string _connectionString;
 
-        public UsersController(string connectionString)
+        public UsersController(AppConfiguration config)
         {
-            _connectionString = connectionString;
+            _connectionString = config.ConnectionString;
         }
 
         [HttpGet]

@@ -11,5 +11,6 @@ namespace DomainModels
         public string RoomName { get; set; }
         public float PricePerDay { get; set;}
         public int NumberOfBeds { get; set;}
+        public List<string> RoomPictures { get; set; }
     }
 }

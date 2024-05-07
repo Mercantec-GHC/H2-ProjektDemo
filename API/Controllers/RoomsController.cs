@@ -1,5 +1,7 @@
-﻿using DomainModels;
+﻿using API.Service;
+using DomainModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Npgsql;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,9 +14,9 @@ namespace HotelBookingAPI.Controllers
     {
         private readonly string _connectionString;
 
-        public RoomsController(string connectionString)
+        public RoomsController(AppConfiguration config)
         {
-            _connectionString = connectionString;
+            _connectionString = config.ConnectionString;
         }
 
         [HttpGet]
@@ -163,9 +165,7 @@ namespace HotelBookingAPI.Controllers
                     }
                 }
             }
-
             return Ok(availableRooms);
         }
-
     }
 }

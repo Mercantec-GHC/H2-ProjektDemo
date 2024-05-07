@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Npgsql;
 using System.Threading.Tasks;
 using API.Service;
+using Microsoft.Extensions.Options;
 
 namespace HotelBookingAPI.Controllers
 {
@@ -12,9 +13,9 @@ namespace HotelBookingAPI.Controllers
     {
         private readonly string _connectionString;
 
-        public HealthCheck(string connectionString)
+        public HealthCheck(AppConfiguration config)
         {
-            _connectionString = connectionString;
+            _connectionString = config.ConnectionString;
         }
 
         [HttpGet]
