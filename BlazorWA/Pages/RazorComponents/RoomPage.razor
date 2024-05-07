@@ -8,9 +8,9 @@
                     <h5 class="card-title">This room is a single, therefore there is only one bed!</h5>
                     <h5 class="card-title">The price is @roomToShow.PricePerDay per day </h5>
                 </div>
-                @for (int i = 0; i < 1; i++)
+                @foreach (var picture in roomToShow.RoomPictures)
                 {
-                    <img src="@roomToShow.RoomPictures[i]" width="250" />
+                    <img src="@picture" width="250" />
                 }
             </div>
         </div>
@@ -26,9 +26,9 @@ else if (roomToShow.RoomName == "Double")
                     <h5 class="card-title">In this spacey hotelroom there is a double bed, that can be split into 2 seperate beds!</h5>
                     <h5 class="card-title">The price is @roomToShow.PricePerDay per day </h5>
                 </div>
-                @for(int i = 0; i < 1; i++)
+                @foreach (var picture in roomToShow.RoomPictures)
                 {
-                    <img src="@roomToShow.RoomPictures[i]" width="250" />
+                    <img src="@picture" width="250" />
                 }
             </div>
         </div>
