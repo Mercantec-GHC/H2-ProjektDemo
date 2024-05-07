@@ -11,18 +11,7 @@
 }
 else
 {
-    <div>
-        <h2>@roomToShow.RoomName</h2>
-        <p>Price per day: @roomToShow.PricePerDay</p>
-        <p>Number of beds: @roomToShow.NumberOfBeds</p>
-        <p>Picture URLs:</p>
-        <ul>
-            @foreach (var url in roomToShow.pictureURLs)
-            {
-                <li><img src="@url" alt="Room Picture" /></li>
-            }
-        </ul>
-    </div>
+    <RoomPage roomToShow="roomToShow"></RoomPage>
 }
 
 @code {
@@ -36,23 +25,21 @@ else
     {
         try
         {
-            var response = await Http.GetFromJsonAsync<RoomDTO>("https://h2-api.onrender.com/api/Rooms/1");
+            var response = await Http.GetFromJsonAsync<RoomDTO>($"https://h2-api.onrender.com/api/Rooms/{roomId}");
             if (response != null)
             {
                 roomToShow = response;
             }
             else
             {
-                // Handle the case where the response is null or empty
-                error = "No room found.";
+                NavigationManager.NavigateTo("/rooms");
             }
         }
         catch (Exception ex)
         {
             // Log the exception or handle it as needed
             error = $"An error occurred: {ex.Message}";
+            NavigationManager.NavigateTo("/rooms");
         }
     }
-}
-
 }

@@ -1,7 +1,7 @@
 ﻿@page "/availableRooms"
 @using System.Net.Http
 @inject HttpClient Http
-@using BlazorWA.Pages.RazorComponents
+
 
 <h3>Select Dates</h3>
 
@@ -12,6 +12,8 @@
 </p>
 
 <button @onclick="FetchRooms">Find Rooms</button>
+<br />
+
 @if( error != null)
 {
     <br />
@@ -31,14 +33,6 @@ else if (availableRooms != null)
     </ul>
 }
 
-<style>
-    .card-content {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-</style>
 
 @code {
     private List<RoomDTO> availableRooms;

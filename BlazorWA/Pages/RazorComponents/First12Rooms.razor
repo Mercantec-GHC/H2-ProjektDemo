@@ -1,6 +1,4 @@
-﻿@page "/room/"
-@page "/rooms"
-@using System.Net.Http
+﻿@using System.Net.Http
 @inject HttpClient Http
 
 @if (error != null)
@@ -9,12 +7,10 @@
 }
 else if (allRooms != null)
 {
-    <h1> All Rooms! </h1>
-
-   @foreach (RoomDTO room in allRooms)
-   {
+    @foreach (RoomDTO room in allRooms)
+    {
         <RoomListItem roomToShow="room"></RoomListItem>
-   }
+    }
 }
 
 @code {

@@ -49,6 +49,47 @@ namespace HotelBookingAPI.Controllers
 
             return Ok(bookings);
         }
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<IEnumerable<Booking>>> GetBookings(int userId)
+        {
+            var bookings = new List<Booking>();
+
+            string sqlQuery = "SELECT * FROM Bookings WHERE UserId = @UserId";
+
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (var command = new NpgsqlCommand(sqlQuery, connection))
+                {
+
+                        command.Parameters.AddWithValue("@UserId", userId);
+
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var booking = new Booking
+                            {
+                                Id = reader.GetInt32(0),
+                                CheckInDate = DateOnly.FromDateTime(reader.GetDateTime(1)),
+                                CheckOutDate = DateOnly.FromDateTime(reader.GetDateTime(2)),
+                                UserId = reader.GetInt32(3),
+                                RoomId = reader.GetInt32(4),
+                                CreatedAt = reader.GetDateTime(5),
+                                UpdatedAt = reader.GetDateTime(6)
+                            };
+
+                            bookings.Add(booking);
+                        }
+                    }
+                }
+            }
+
+            return Ok(bookings);
+        }
+
 
     }
 }
