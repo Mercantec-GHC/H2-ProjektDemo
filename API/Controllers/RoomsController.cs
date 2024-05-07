@@ -71,10 +71,10 @@ namespace HotelBookingAPI.Controllers
             {
                 await connection.OpenAsync();
 
-                string sql = @"SELECT r.Id, r.RoomNumber, r.CreatedAt, r.UpdatedAt, rt.RoomName, rt.PricePerDay, rt.NumberOfBeds 
-                               FROM Rooms r 
-                               INNER JOIN roomtypes rt 
-                               ON r.RoomTypeId = rt.Id
+                string sql = @"SELECT r.Id, r.RoomNumber, r.CreatedAt, r.UpdatedAt, rt.RoomName, rt.PricePerDay, rt.NumberOfBeds, array_to_string(rt.roompictures, ',') AS roompictures 
+                               FROM Rooms r
+                               INNER JOIN 
+                               roomtypes rt ON r.RoomTypeId = rt.Id
                                WHERE r.Id = @Id";
 
                 using (var command = new NpgsqlCommand(sql, connection))
@@ -93,8 +93,14 @@ namespace HotelBookingAPI.Controllers
                                 UpdatedAt = reader.GetDateTime(3),
                                 RoomName = reader.GetString(4),
                                 PricePerDay = reader.GetFloat(5),
-                                NumberOfBeds = reader.GetInt32(6)
+                                NumberOfBeds = reader.GetInt32(6),
+                                RoomPictures = new List<string>()
                             };
+
+                            foreach (var item in reader.GetString(7).Split(',').Where(s => !string.IsNullOrWhiteSpace(s)))
+                            {
+                                roomDetail.RoomPictures.Add(item);
+                            }
                         }
                     }
                 }
