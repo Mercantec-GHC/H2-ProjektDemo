@@ -31,14 +31,14 @@ namespace API.Controllers
             {
                 return BadRequest("No file was provided.");
             }
-            //if (!file.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
-            //{
-            //    return BadRequest("Only image files are allowed.");
-            //}
-            //if (file.Length > 10485760)
-            //{
-            //    return BadRequest("The file size must be less than 10MB.");
-            //}
+            if (!file.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
+            {
+                return BadRequest("Only image files are allowed.");
+            }
+            if (file.Length > 10485760)
+            {
+                return BadRequest("The file size must be less than 10MB.");
+            }
 
             var r2Service = new R2Service(_accessKey, _secretKey);
             var imageUrl = await r2Service.UploadToR2(file.OpenReadStream(), file.FileName);
