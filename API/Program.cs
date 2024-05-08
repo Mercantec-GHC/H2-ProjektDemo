@@ -29,7 +29,6 @@ Console.WriteLine($"AccessKey: {builder.Configuration.GetConnectionString("Acces
 Console.WriteLine($"SecretKey: {builder.Configuration.GetConnectionString("secretKey")}");
 
 
-// In your Startup.cs or Program.cs
 builder.Services.AddSingleton(new AppConfiguration
 {
     ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? Environment.GetEnvironmentVariable("DefaultConnection"),

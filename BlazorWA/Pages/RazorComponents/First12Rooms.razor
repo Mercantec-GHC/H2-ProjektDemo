@@ -25,7 +25,6 @@ else if (allRooms != null)
 
     private async Task FetchRooms()
     {
-
         var response = await Http.GetFromJsonAsync<List<RoomDTO>>($"https://h2-api.onrender.com/api/Rooms");
         allRooms = response;
     }
